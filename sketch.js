@@ -7,6 +7,7 @@ var closedSet = [];
 var start;
 var end;
 var w,h;
+var path = [];
 
 function removeFromArray(arr,elmt){
   for(var i = arr.length-1;i>=0;i--){
@@ -15,9 +16,15 @@ function removeFromArray(arr,elmt){
     }
   }
 }
+
+// function heuristic(a,b){
+//   var d = dist(a.i,a.j,b.i,b.j);  // uses pythagor theoreme but is not that good because of the possible steps to take
+//   return d;
+// }
+
 function heuristic(a,b){
-  var d = dist(a.i,a.j,b.i,b.j);  // uses pythagor theoreme
-  return d;
+  var d = abs(a.i-b.i)+abs(a.j-b.j);  
+  return d;             // we can use what is called a manhattan distance or taxi-cab distance
 }
 
 function Spot(i,j){
@@ -28,6 +35,7 @@ function Spot(i,j){
   this.h = 0;
 
   this.neighbors = [];
+  this.previous = undefined;
   
 
   this.show = function(col){
@@ -111,7 +119,9 @@ console.log(grid);
 
       var current = openSet[lowestIndex];
 
-      if(current == end ){
+      if(current === end ){
+
+      noLoop();
         console.log('Done !!');
       }
 
@@ -135,6 +145,7 @@ console.log(grid);
 
           neighbor.h = heuristic(neighbor,end);
           neighbor.f = neighbor.g + neighbor.h;
+          neighbor.previous = current;
 
         }
       }
@@ -154,5 +165,17 @@ console.log(grid);
 
     for(var i =0 ; i<openSet.length;i++){
       openSet[i].show(color(0,255,0));      
+    }
+
+    path = [];
+    var temp = current;
+    path.push(temp);
+    while(temp.previous){
+    path.push(temp.previous);   // back tracks the path starting from the end or every frame
+    temp = temp.previous;
+    }
+
+    for(var i=0;i<path.length;i++){
+      path[i].show(color(0,0,255));
     }
   }
