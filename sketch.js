@@ -1,5 +1,5 @@
-var cols = 25;
-var rows = 25;
+var cols = 20;
+var rows = 20;
 var grid = new Array(cols);
 
 var openSet = [];
@@ -27,6 +27,73 @@ function heuristic(a,b){
   return d;             // we can use what is called a manhattan distance or taxi-cab distance
 }
 
+
+
+//Diagonal distance
+/*If your map allows diagonal movement you need a different heuristic. The Manhattan distance for (4 east, 4 north)
+ will be 8⨉D. However, you could simply move (4 northeast) instead, so the heuristic should be 4⨉D2, where D2 is the 
+ cost of moving diagonally.
+*/
+
+
+
+// function heuristic(a,b){
+//     dx = abs(a.x - b.x)
+//     dy = abs(a.y - b.y)
+//     return (dx + dy) + (D2 - 2 * D) * min(dx, dy)
+// }
+
+let selector = 1;
+// Draw the selector state 
+function drawSelectorState(type, c) {
+  if (settingUp) {
+      let m = {
+          x: mouseX,
+          y: mouseY
+      }
+
+      push()
+      if (m.x >= 4 * w / 5) {
+          translate(-75, 0)
+      }
+      if (m.y <= h / 5) {
+          translate(0, 25)
+      }
+      // lil square
+      stroke(2);
+      fill(c);
+      rect(m.x + 2, m.y - 17, 15, 15);
+
+      // lil text :
+      stroke(5);
+      fill(255)
+      textSize(15);
+      text(type, m.x + 20, m.y - 5);
+      pop()
+  }
+}
+
+// draw the selector state according to the value passed 
+function gizmoSelector(s) {
+  switch (s) {
+      case 1:
+          drawSelectorState("Walkable", 255)
+          break;
+      case 2:
+          drawSelectorState("Obstacle", 0)
+          break;
+      case 3:
+          drawSelectorState("Point A", "blue")
+          break;
+      case 4:
+          drawSelectorState("Point B", "orange")
+          break;
+  }
+
+}
+
+    
+
 function Spot(i,j){
   this.i = i;
   this.j = j;
@@ -36,10 +103,18 @@ function Spot(i,j){
 
   this.neighbors = [];
   this.previous = undefined;
+  this.obstacle = false;
+
+  if(random(1) < 0.3){
+    this.obstacle = true;
+  }
   
 
   this.show = function(col){
     fill(col);
+    if(this.obstacle){
+      fill(0);
+    }
     noStroke();
      rect(this.i*w,this.j*h,w-1,h-1);
     }
@@ -76,8 +151,11 @@ function setup() {
 
     w = width/cols;
     h = height/rows;
-
-    for(var i = 0 ; i< cols;i++){
+    // button = createButton('click me');
+    // button.position(0, 0);
+    // button.mousePressed(changeBG);
+  
+      for(var i = 0 ; i< cols;i++){
       grid[i] = new Array(rows);
     }
 
@@ -95,7 +173,14 @@ function setup() {
       }
 
 start = grid[0][0];
+if(start.obstacle){
+  window.alert("Le point de départ est un Obstacle ! L'algorithme ne commencera pas !");
+  return 0;
+}
 end = grid[cols-1][rows-1];
+if(end.obstacle){
+  window.alert("Le point de Départ est un obstacle, L'algorithme ne trouvera pas de chemin et testera jusqu'à la fin !");
+}
 
 openSet.push(start);
 
@@ -131,7 +216,7 @@ console.log(grid);
       var neighbors = current.neighbors;
       for(var i = 0;i<neighbors.length;i++){
         var neighbor = neighbors[i];
-        if(!closedSet.includes(neighbor)){
+        if(!closedSet.includes(neighbor) && !neighbor.obstacle){
           var tempG = current.g + 1;
 
           if(openSet.includes(neighbor)){
