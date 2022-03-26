@@ -192,6 +192,8 @@ console.log(grid);
   
   function draw() {
 
+
+    
     background(0);
 
     if(openSet.length > 0){
@@ -207,7 +209,10 @@ console.log(grid);
       if(current === end ){
 
       noLoop();
-        console.log('Done !!');
+        // console.log('Done !!');
+        // document.write("PATH FOUND !");
+        document.getElementById("result").innerHTML = "PATH FOUND !";
+
       }
 
       removeFromArray(openSet,current);
@@ -235,6 +240,8 @@ console.log(grid);
         }
       }
     }else{
+      // document.write("PATH NOT FOUND !");
+      document.getElementById("result").innerHTML = "PATH NOT FOUND !";
       // no solution !
     }
 
