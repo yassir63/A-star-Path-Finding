@@ -1,6 +1,6 @@
 # A-star-Path-Finding
 
-YOU HAVE TO BE CONNCETED TO INTERNET FOR THE LIBRARIES TO WORK !
+YOU HAVE TO BE CONNECTED TO INTERNET FOR THE LIBRARIES TO WORK !
 
 
 This Project is a test implementation of the A star Path Finding Algorithm ( A* ) written in javascript using the P5.js visualization library to be able to see every iteration 
