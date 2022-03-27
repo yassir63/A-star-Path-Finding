@@ -43,54 +43,54 @@ function heuristic(a,b){
 //     return (dx + dy) + (D2 - 2 * D) * min(dx, dy)
 // }
 
-let selector = 1;
-// Draw the selector state 
-function drawSelectorState(type, c) {
-  if (settingUp) {
-      let m = {
-          x: mouseX,
-          y: mouseY
-      }
+// let selector = 1;
+// // Draw the selector state 
+// function drawSelectorState(type, c) {
+//   if (settingUp) {
+//       let m = {
+//           x: mouseX,
+//           y: mouseY
+//       }
 
-      push()
-      if (m.x >= 4 * w / 5) {
-          translate(-75, 0)
-      }
-      if (m.y <= h / 5) {
-          translate(0, 25)
-      }
-      // lil square
-      stroke(2);
-      fill(c);
-      rect(m.x + 2, m.y - 17, 15, 15);
+//       push()
+//       if (m.x >= 4 * w / 5) {
+//           translate(-75, 0)
+//       }
+//       if (m.y <= h / 5) {
+//           translate(0, 25)
+//       }
+//       // lil square
+//       stroke(2);
+//       fill(c);
+//       rect(m.x + 2, m.y - 17, 15, 15);
 
-      // lil text :
-      stroke(5);
-      fill(255)
-      textSize(15);
-      text(type, m.x + 20, m.y - 5);
-      pop()
-  }
-}
+//       // lil text :
+//       stroke(5);
+//       fill(255)
+//       textSize(15);
+//       text(type, m.x + 20, m.y - 5);
+//       pop()
+//   }
+// }
 
-// draw the selector state according to the value passed 
-function gizmoSelector(s) {
-  switch (s) {
-      case 1:
-          drawSelectorState("Walkable", 255)
-          break;
-      case 2:
-          drawSelectorState("Obstacle", 0)
-          break;
-      case 3:
-          drawSelectorState("Point A", "blue")
-          break;
-      case 4:
-          drawSelectorState("Point B", "orange")
-          break;
-  }
+// // draw the selector state according to the value passed 
+// function gizmoSelector(s) {
+//   switch (s) {
+//       case 1:
+//           drawSelectorState("Walkable", 255)
+//           break;
+//       case 2:
+//           drawSelectorState("Obstacle", 0)
+//           break;
+//       case 3:
+//           drawSelectorState("Point A", "blue")
+//           break;
+//       case 4:
+//           drawSelectorState("Point B", "orange")
+//           break;
+//   }
 
-}
+// }
 
     
 
@@ -188,7 +188,39 @@ console.log(grid);
       
   }
 
+//   let paused = false;
+// function keyTyped() {
+//     // RESET
+//     if ((key === "r" || key == "R") && settingUp) {
+//         resetGrid();
+//     }
+//     // PAUSE
+//     if ((key == "p" || key == "¨P") && !settingUp) {
+//         if (!paused) {
+//             noLoop()
+//             paused = true;
+//         } else {
+//             loop();
+//             paused = false;
+//         }
 
+//     }
+
+//   }
+
+
+let paused = false;
+document.addEventListener('keypress', (e) => {
+    if (e.key == "P" || e.key == "p") {
+      if (!paused) {
+                    noLoop()
+                    paused = true;
+                } else {
+                    loop();
+                    paused = false;
+                }
+    }
+})
   
   function draw() {
 
