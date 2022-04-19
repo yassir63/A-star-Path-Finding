@@ -110,38 +110,3 @@ document.addEventListener('keypress', (x) => {
 
 // if not start noLoop();
 
-// ROWS VALUE
-let rowsRange = document.getElementById("rows_range");
-let rowstext = document.getElementById("txt_rows_range");
-
-rowsRange.value = rows;
-rowstext.textContent = rowsRange.value;
-rowsRange.addEventListener('mousemove', () => {
-    rowstext.textContent = rowsRange.value;
-    setup();
-});
-
-function setRows() {
-    rowstext.textContent = rowsRange.value;
-    rows = rowsRange.value;
-    return rows;
-
-}
-
-// COLUMNS VALUE :
-let colsRange = document.getElementById("cols_range");
-let colstext = document.getElementById("txt_cols_range");
-
-colsRange.value = cols;
-colstext.textContent = colsRange.value;
-colsRange.addEventListener('mousemove', () => {
-    colstext.textContent = colsRange.value;
-    setup();
-});
-
-function setCols() {
-    colstext.textContent = colsRange.value;
-    cols = colsRange.value;
-    return cols;
-}
-  
