@@ -1,3 +1,7 @@
+// Problem with Spacebar not working after S 
+//Problem with full black screen when diagonal doesn t find path !
+
+
 var cols = 20;
 var rows = 20;
 var grid = new Array(cols);
@@ -8,6 +12,8 @@ var start;
 var end;
 var w,h;
 var path = [];
+var mode;
+let setUp = false;
 
 function removeFromArray(arr,elmt){
   for(var i = arr.length-1;i>=0;i--){
@@ -27,6 +33,14 @@ function heuristic(a,b){
   return d;             // we can use what is called a manhattan distance or taxi-cab distance
 }
 
+// function heuristic(a,b){
+
+
+//     y_dist = abs(a.y - b.y);
+//     x_dist = abs(a.x - b.x);
+//     return max(y_dist, x_dist);
+
+//   }
 
 
 //Diagonal distance
@@ -38,10 +52,15 @@ function heuristic(a,b){
 
 
 // function heuristic(a,b){
+//   D = 1;
+//   D2 = sqrt(2);
 //     dx = abs(a.x - b.x)
 //     dy = abs(a.y - b.y)
-//     return (dx + dy) + (D2 - 2 * D) * min(dx, dy)
+//     return (dx + dy) + (D2 - 2 * D) * min(dx, dy);
 // }
+
+
+
 
 // let selector = 1;
 // // Draw the selector state 
@@ -92,7 +111,18 @@ function heuristic(a,b){
 
 // }
 
-    
+
+// function mousePressed() {
+//   for (var j = 0; j < mouseY; j++) {
+//       for (var i = 0; i < mouseX; i++) {
+         
+          
+//             grid[i][j].show(color(164,64,51));
+          
+          
+//       }
+//   }
+// }
 
 function Spot(i,j){
   this.i = i;
@@ -105,10 +135,17 @@ function Spot(i,j){
   this.previous = undefined;
   this.obstacle = false;
 
-  if(random(1) < 0.3){
+  if(random(1) < 0.1){
     this.obstacle = true;
   }
   
+
+
+
+
+
+
+
 
   this.show = function(col){
     fill(col);
@@ -120,40 +157,136 @@ function Spot(i,j){
     }
 
 
-  this.addNeighbors = function(grid){
+  this.addNeighbors = function(grid,mode){
     var i = this.i;
     var j = this.j;
+    
+
+    if(mode == 0){
+      // if(i<cols-1){
+      //   this.neighbors.push(grid[i+1][j]);
+      //   this.neighbors.push(grid[i+1][j+1]);
+      //   // this.neighbors.push(grid[i+1][j-1]);
+      // }
+      // if(i>0){
+      //   this.neighbors.push(grid[i-1][j]);
+      //   this.neighbors.push(grid[i-1][j-1]);
+      // }
+  
+      // if(j < rows-1){
+      //   this.neighbors.push(grid[i][j+1]);
+      //   // this.neighbors.push(grid[i-1][j+1]);
+      //   // this.neighbors.push(grid[i+1][j+1]);
+      // }
+  
+      // if(j>0){
+      //   this.neighbors.push(grid[i][j-1]);
+      //   // this.neighbors.push(grid[i][j-1]);
+      // }
+      // if(i<cols-1){
+      //   this.neighbors.push(grid[i+1][j]);
+      //   this.neighbors.push(grid[i+1][j+1]);
+      //   // this.neighbors.push(grid[i+1][j-1]);
+      // }
+      // if(i>0){
+      //   this.neighbors.push(grid[i-1][j]);
+      //   this.neighbors.push(grid[i-1][j-1]);
+      // }
 
 
-    if(i<cols-1){
-      this.neighbors.push(grid[i+1][j]);
-    }
-    if(i>0){
-      this.neighbors.push(grid[i-1][j]);
+      if(i>0){
+        this.neighbors.push(grid[i-1][j]);
+        this.neighbors.push(grid[i-1][j-1]);
+      }
+       if(j>0){
+        this.neighbors.push(grid[i][j-1]);
+     
+      }
+
+      if(i<cols-1 && j<rows-1 && i>0 && j>0){
+        this.neighbors.push(grid[i+1][j]);
+        this.neighbors.push(grid[i+1][j+1]);
+        this.neighbors.push(grid[i][j+1]);
+        if(i>1 && j>1){
+          this.neighbors.push(grid[i+1][j-1]);
+          this.neighbors.push(grid[i][j-1]);
+          this.neighbors.push(grid[i-1][j-1]);
+          this.neighbors.push(grid[i-1][j]);
+          this.neighbors.push(grid[i-1][j]);
+          this.neighbors.push(grid[i-1][j+1]);
+        }
+      
+
+        if(j < rows-1){
+          this.neighbors.push(grid[i][j+1]);
+   
+        }
+        if(i<cols-1){
+          this.neighbors.push(grid[i+1][j]);
+        
+        }
+        
+      // if(j < rows-1){
+      //   this.neighbors.push(grid[i][j+1]);
+      //   // this.neighbors.push(grid[i-1][j+1]);
+      //   // this.neighbors.push(grid[i+1][j+1]);
+      // }
+  
+      // if(j>0){
+      //   this.neighbors.push(grid[i][j-1]);
+      //   // this.neighbors.push(grid[i][j-1]);
+      }
+    }else{
+      if(i<cols-1){
+        this.neighbors.push(grid[i+1][j]);
+      
+      }
+      if(i>0){
+        this.neighbors.push(grid[i-1][j]);
+   
+      }
+  
+      if(j < rows-1){
+        this.neighbors.push(grid[i][j+1]);
+ 
+      }
+  
+      if(j>0){
+        this.neighbors.push(grid[i][j-1]);
+        
+      }
     }
 
-    if(j < rows-1){
-      this.neighbors.push(grid[i][j+1]);
-    }
-
-    if(j>0){
-      this.neighbors.push(grid[i][j-1]);
-    }
+   
    
     
     
   }
+  
 }
 
-function setup() {
-    createCanvas(400, 400);
-    console.log('A star Yassir Amami');
+function validate() {
+  if (document.getElementById('diagonal').checked) {
+    openSet = [];
+    closedSet = [];
 
+     setup(0);
+     draw();
+  }else{
+    openSet = [];
+    closedSet = [];
+    
+      setup(1);
+      draw();
+  }
+}
+
+function setup(mode) {
+    createCanvas(500, 500);
+    console.log('A star Yassir Amami');
+    
     w = width/cols;
     h = height/rows;
-    // button = createButton('click me');
-    // button.position(0, 0);
-    // button.mousePressed(changeBG);
   
       for(var i = 0 ; i< cols;i++){
       grid[i] = new Array(rows);
@@ -168,63 +301,44 @@ function setup() {
 
       for(var i = 0 ; i< cols;i++){
       for(var j=0; j<rows;j++){
-        grid[i][j].addNeighbors(grid);
+        grid[i][j].addNeighbors(grid,mode);
     }
       }
 
-start = grid[0][0];
+start = grid[11][10];
 if(start.obstacle){
   window.alert("Le point de départ est un Obstacle ! L'algorithme ne commencera pas !");
   return 0;
 }
+// end = grid[cols-1][rows-1];
 end = grid[cols-1][rows-1];
 if(end.obstacle){
-  window.alert("Le point de Départ est un obstacle, L'algorithme ne trouvera pas de chemin et testera jusqu'à la fin !");
+  window.alert("Le point de d'arrivée est un obstacle, L'algorithme ne trouvera pas de chemin et testera jusqu'à la fin !");
 }
+
 
 openSet.push(start);
 
 console.log(grid); 
+noLoop();
       
   }
 
-//   let paused = false;
-// function keyTyped() {
-//     // RESET
-//     if ((key === "r" || key == "R") && settingUp) {
-//         resetGrid();
-//     }
-//     // PAUSE
-//     if ((key == "p" || key == "¨P") && !settingUp) {
-//         if (!paused) {
-//             noLoop()
-//             paused = true;
-//         } else {
-//             loop();
-//             paused = false;
+//   function mousePressed() {
+//     for (var j = 0; j < 10; j++) {
+//         for (var i = 0; i < 10; i++) {
+//             var dis = dist(mouseX, mouseY, x[i], y[j]);
+//             if(dis < w/2) col[j * 10 + i] =! col[j * 10 + i];
 //         }
-
 //     }
+// }
 
-//   }
 
 
-let paused = false;
-document.addEventListener('keypress', (e) => {
-    if (e.key == "P" || e.key == "p") {
-      if (!paused) {
-                    noLoop()
-                    paused = true;
-                } else {
-                    loop();
-                    paused = false;
-                }
-    }
-})
-  
   function draw() {
-
-
+    
+    if(!setUp){
+     
     
     background(0);
 
@@ -246,6 +360,7 @@ document.addEventListener('keypress', (e) => {
         document.getElementById("result").innerHTML = "PATH FOUND !";
 
       }
+      
 
       removeFromArray(openSet,current);
       closedSet.push(current);
@@ -303,3 +418,4 @@ document.addEventListener('keypress', (e) => {
       path[i].show(color(0,0,255));
     }
   }
+}
