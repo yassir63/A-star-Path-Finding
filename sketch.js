@@ -2,8 +2,8 @@
 //Problem with full black screen when diagonal doesn t find path !
 
 
-var cols = 20;
-var rows = 20;
+var cols = 50;
+var rows = 50;
 var grid = new Array(cols);
 
 var openSet = [];
