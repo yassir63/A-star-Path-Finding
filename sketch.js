@@ -1,9 +1,11 @@
 // Problem with Spacebar not working after S 
 //Problem with full black screen when diagonal doesn t find path !
+// bug :  doesn t know left or down if diagonal obstacle
+// bug : doesn t know last cell
 
-
-var cols = 50;
-var rows = 50;
+// why not add start and end determination thorugh inputting numbers !
+var cols = 60;
+var rows = 60;
 var grid = new Array(cols);
 
 var openSet = [];
@@ -121,8 +123,11 @@ function heuristic(a,b){
           
           
 //       }
+//       console.log(mouseX,mouseY);
 //   }
 // }
+
+
 
 function Spot(i,j){
   this.i = i;
@@ -134,14 +139,20 @@ function Spot(i,j){
   this.neighbors = [];
   this.previous = undefined;
   this.obstacle = false;
+  this.clicked = false;
+  
 
   if(random(1) < 0.1){
     this.obstacle = true;
   }
   
-
-
-
+  
+//   let m = {
+//     x: mouseX,
+//     y: mouseY
+// }
+//   let x = floor(map(m.x, 0, (rows - 1) * w, 0, rows - 1, true));
+//   let y = floor(map(m.y, 0, (cols - 1) * w, 0, cols - 1, true));
 
 
 
@@ -151,6 +162,8 @@ function Spot(i,j){
     fill(col);
     if(this.obstacle){
       fill(0);
+    } else if(this.clicked){
+      fill(243,67,65);
     }
     noStroke();
      rect(this.i*w,this.j*h,w-1,h-1);
@@ -163,6 +176,36 @@ function Spot(i,j){
     
 
     if(mode == 0){
+
+
+      if (i < cols - 1) {
+        this.neighbors.push(grid[i + 1][j]);
+      }
+      if (i > 0) {
+        this.neighbors.push(grid[i - 1][j]);
+      }
+      if (j < rows - 1) {
+        this.neighbors.push(grid[i][j + 1]);
+      }
+      if (j > 0) {
+        this.neighbors.push(grid[i][j - 1]);
+      }
+      if (i > 0 && j > 0) {
+        this.neighbors.push(grid[i - 1][j - 1]);
+      }
+      if (i < cols - 1 && j > 0) {
+        this.neighbors.push(grid[i + 1][j - 1]);
+      }
+      if (i > 0 && j < rows - 1) {
+        this.neighbors.push(grid[i - 1][j + 1]);
+      }
+      if (i < cols - 1 && j < rows - 1) {
+        this.neighbors.push(grid[i + 1][j + 1]);
+      }
+
+
+
+
       // if(i<cols-1){
       //   this.neighbors.push(grid[i+1][j]);
       //   this.neighbors.push(grid[i+1][j+1]);
@@ -194,37 +237,37 @@ function Spot(i,j){
       // }
 
 
-      if(i>0){
-        this.neighbors.push(grid[i-1][j]);
-        this.neighbors.push(grid[i-1][j-1]);
-      }
-       if(j>0){
-        this.neighbors.push(grid[i][j-1]);
+      // // if(i>0){
+      // //   this.neighbors.push(grid[i-1][j]);
+      // //   this.neighbors.push(grid[i-1][j-1]);
+      // // }
+      // //  if(j>0){
+      // //   this.neighbors.push(grid[i][j-1]);
      
-      }
+      // // }
 
-      if(i<cols-1 && j<rows-1 && i>0 && j>0){
-        this.neighbors.push(grid[i+1][j]);
-        this.neighbors.push(grid[i+1][j+1]);
-        this.neighbors.push(grid[i][j+1]);
-        if(i>1 && j>1){
-          this.neighbors.push(grid[i+1][j-1]);
-          this.neighbors.push(grid[i][j-1]);
-          this.neighbors.push(grid[i-1][j-1]);
-          this.neighbors.push(grid[i-1][j]);
-          this.neighbors.push(grid[i-1][j]);
-          this.neighbors.push(grid[i-1][j+1]);
-        }
+      // // if(i<cols-1 && j<rows-1 && i>0 && j>0){
+      // //   this.neighbors.push(grid[i+1][j]);
+      // //   this.neighbors.push(grid[i+1][j+1]);
+      // //   this.neighbors.push(grid[i][j+1]);
+      // //   if(i>1 && j>1){
+      // //     this.neighbors.push(grid[i+1][j-1]);
+      // //     this.neighbors.push(grid[i][j-1]);
+      // //     this.neighbors.push(grid[i-1][j-1]);
+      // //     this.neighbors.push(grid[i-1][j]);
+      // //     this.neighbors.push(grid[i-1][j]);
+      // //     this.neighbors.push(grid[i-1][j+1]);
+      // //   }
       
 
-        if(j < rows-1){
-          this.neighbors.push(grid[i][j+1]);
+      // //   if(j < rows-1){
+      // //     this.neighbors.push(grid[i][j+1]);
    
-        }
-        if(i<cols-1){
-          this.neighbors.push(grid[i+1][j]);
+      // //   }
+      // //   if(i<cols-1){
+      // //     this.neighbors.push(grid[i+1][j]);
         
-        }
+      // //   }
         
       // if(j < rows-1){
       //   this.neighbors.push(grid[i][j+1]);
@@ -235,7 +278,7 @@ function Spot(i,j){
       // if(j>0){
       //   this.neighbors.push(grid[i][j-1]);
       //   // this.neighbors.push(grid[i][j-1]);
-      }
+      // }
     }else{
       if(i<cols-1){
         this.neighbors.push(grid[i+1][j]);
@@ -265,11 +308,42 @@ function Spot(i,j){
   
 }
 
+Spot.prototype.contains = function (x,y){
+  return(x*w>this.x && x*w < (this.x*w + this.w) && y*w > this.y*w && y*w < (this.y*w + this.w));
+}
+
+
+function mousePressed() {
+  for(var i=0; i < cols; i++){
+    for( var j=0; j < rows ; j++ ){
+      if(grid[i][j].contains(mouseX,mouseY)){
+        grid[i][j].clicked = true;
+        console.log("salam");
+        
+}
+}
+    }
+    // grid[2][3].fill(233,43,32);
+    // console.log("salam");
+    // grid[mouseX][mouseY].fill(0);
+    // grid[2][3].clicked = true;
+    // console.log("salam");
+    // if(mouseX>this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.w){
+    //   console.log("salam");
+    // }
+
+    
+    
+  }
+
+  
+
+
 function validate() {
   if (document.getElementById('diagonal').checked) {
     openSet = [];
     closedSet = [];
-
+    
      setup(0);
      draw();
   }else{
@@ -305,13 +379,13 @@ function setup(mode) {
     }
       }
 
-start = grid[11][10];
+start = grid[46][15];
 if(start.obstacle){
   window.alert("Le point de départ est un Obstacle ! L'algorithme ne commencera pas !");
   return 0;
 }
 // end = grid[cols-1][rows-1];
-end = grid[cols-1][rows-1];
+end = grid[0][rows-1];
 if(end.obstacle){
   window.alert("Le point de d'arrivée est un obstacle, L'algorithme ne trouvera pas de chemin et testera jusqu'à la fin !");
 }
@@ -320,6 +394,9 @@ if(end.obstacle){
 openSet.push(start);
 
 console.log(grid); 
+
+
+
 noLoop();
       
   }
@@ -419,3 +496,4 @@ noLoop();
     }
   }
 }
+  
