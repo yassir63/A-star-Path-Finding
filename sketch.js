@@ -1,9 +1,7 @@
 // Problem with Spacebar not working after S 
-//Problem with full black screen when diagonal doesn t find path !
-// bug :  doesn t know left or down if diagonal obstacle
-// bug : doesn t know last cell
-
 // why not add start and end determination thorugh inputting numbers !
+
+
 var cols = 60;
 var rows = 60;
 var grid = new Array(cols);
@@ -31,7 +29,8 @@ function removeFromArray(arr,elmt){
 // }
 
 function heuristic(a,b){
-  var d = abs(a.i-b.i)+abs(a.j-b.j);  
+  var d = abs(a.i-b.i)+abs(a.j-b.j);
+  // var d = dist(a.i,a.j,b.i,b.j);  
   return d;             // we can use what is called a manhattan distance or taxi-cab distance
 }
 
@@ -64,69 +63,6 @@ function heuristic(a,b){
 
 
 
-// let selector = 1;
-// // Draw the selector state 
-// function drawSelectorState(type, c) {
-//   if (settingUp) {
-//       let m = {
-//           x: mouseX,
-//           y: mouseY
-//       }
-
-//       push()
-//       if (m.x >= 4 * w / 5) {
-//           translate(-75, 0)
-//       }
-//       if (m.y <= h / 5) {
-//           translate(0, 25)
-//       }
-//       // lil square
-//       stroke(2);
-//       fill(c);
-//       rect(m.x + 2, m.y - 17, 15, 15);
-
-//       // lil text :
-//       stroke(5);
-//       fill(255)
-//       textSize(15);
-//       text(type, m.x + 20, m.y - 5);
-//       pop()
-//   }
-// }
-
-// // draw the selector state according to the value passed 
-// function gizmoSelector(s) {
-//   switch (s) {
-//       case 1:
-//           drawSelectorState("Walkable", 255)
-//           break;
-//       case 2:
-//           drawSelectorState("Obstacle", 0)
-//           break;
-//       case 3:
-//           drawSelectorState("Point A", "blue")
-//           break;
-//       case 4:
-//           drawSelectorState("Point B", "orange")
-//           break;
-//   }
-
-// }
-
-
-// function mousePressed() {
-//   for (var j = 0; j < mouseY; j++) {
-//       for (var i = 0; i < mouseX; i++) {
-         
-          
-//             grid[i][j].show(color(164,64,51));
-          
-          
-//       }
-//       console.log(mouseX,mouseY);
-//   }
-// }
-
 
 
 function Spot(i,j){
@@ -142,18 +78,11 @@ function Spot(i,j){
   this.clicked = false;
   
 
-  if(random(1) < 0.1){
+  if(random(1) < 0.3){
     this.obstacle = true;
   }
   
   
-//   let m = {
-//     x: mouseX,
-//     y: mouseY
-// }
-//   let x = floor(map(m.x, 0, (rows - 1) * w, 0, rows - 1, true));
-//   let y = floor(map(m.y, 0, (cols - 1) * w, 0, cols - 1, true));
-
 
 
 
@@ -206,79 +135,7 @@ function Spot(i,j){
 
 
 
-      // if(i<cols-1){
-      //   this.neighbors.push(grid[i+1][j]);
-      //   this.neighbors.push(grid[i+1][j+1]);
-      //   // this.neighbors.push(grid[i+1][j-1]);
-      // }
-      // if(i>0){
-      //   this.neighbors.push(grid[i-1][j]);
-      //   this.neighbors.push(grid[i-1][j-1]);
-      // }
   
-      // if(j < rows-1){
-      //   this.neighbors.push(grid[i][j+1]);
-      //   // this.neighbors.push(grid[i-1][j+1]);
-      //   // this.neighbors.push(grid[i+1][j+1]);
-      // }
-  
-      // if(j>0){
-      //   this.neighbors.push(grid[i][j-1]);
-      //   // this.neighbors.push(grid[i][j-1]);
-      // }
-      // if(i<cols-1){
-      //   this.neighbors.push(grid[i+1][j]);
-      //   this.neighbors.push(grid[i+1][j+1]);
-      //   // this.neighbors.push(grid[i+1][j-1]);
-      // }
-      // if(i>0){
-      //   this.neighbors.push(grid[i-1][j]);
-      //   this.neighbors.push(grid[i-1][j-1]);
-      // }
-
-
-      // // if(i>0){
-      // //   this.neighbors.push(grid[i-1][j]);
-      // //   this.neighbors.push(grid[i-1][j-1]);
-      // // }
-      // //  if(j>0){
-      // //   this.neighbors.push(grid[i][j-1]);
-     
-      // // }
-
-      // // if(i<cols-1 && j<rows-1 && i>0 && j>0){
-      // //   this.neighbors.push(grid[i+1][j]);
-      // //   this.neighbors.push(grid[i+1][j+1]);
-      // //   this.neighbors.push(grid[i][j+1]);
-      // //   if(i>1 && j>1){
-      // //     this.neighbors.push(grid[i+1][j-1]);
-      // //     this.neighbors.push(grid[i][j-1]);
-      // //     this.neighbors.push(grid[i-1][j-1]);
-      // //     this.neighbors.push(grid[i-1][j]);
-      // //     this.neighbors.push(grid[i-1][j]);
-      // //     this.neighbors.push(grid[i-1][j+1]);
-      // //   }
-      
-
-      // //   if(j < rows-1){
-      // //     this.neighbors.push(grid[i][j+1]);
-   
-      // //   }
-      // //   if(i<cols-1){
-      // //     this.neighbors.push(grid[i+1][j]);
-        
-      // //   }
-        
-      // if(j < rows-1){
-      //   this.neighbors.push(grid[i][j+1]);
-      //   // this.neighbors.push(grid[i-1][j+1]);
-      //   // this.neighbors.push(grid[i+1][j+1]);
-      // }
-  
-      // if(j>0){
-      //   this.neighbors.push(grid[i][j-1]);
-      //   // this.neighbors.push(grid[i][j-1]);
-      // }
     }else{
       if(i<cols-1){
         this.neighbors.push(grid[i+1][j]);
@@ -323,16 +180,7 @@ function mousePressed() {
 }
 }
     }
-    // grid[2][3].fill(233,43,32);
-    // console.log("salam");
-    // grid[mouseX][mouseY].fill(0);
-    // grid[2][3].clicked = true;
-    // console.log("salam");
-    // if(mouseX>this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.w){
-    //   console.log("salam");
-    // }
-
-    
+     
     
   }
 
@@ -384,8 +232,7 @@ if(start.obstacle){
   window.alert("Le point de départ est un Obstacle ! L'algorithme ne commencera pas !");
   return 0;
 }
-// end = grid[cols-1][rows-1];
-end = grid[0][rows-1];
+end = grid[cols-1][rows-1];
 if(end.obstacle){
   window.alert("Le point de d'arrivée est un obstacle, L'algorithme ne trouvera pas de chemin et testera jusqu'à la fin !");
 }
@@ -401,14 +248,6 @@ noLoop();
       
   }
 
-//   function mousePressed() {
-//     for (var j = 0; j < 10; j++) {
-//         for (var i = 0; i < 10; i++) {
-//             var dis = dist(mouseX, mouseY, x[i], y[j]);
-//             if(dis < w/2) col[j * 10 + i] =! col[j * 10 + i];
-//         }
-//     }
-// }
 
 
 
@@ -432,9 +271,7 @@ noLoop();
       if(current === end ){
 
       noLoop();
-        // console.log('Done !!');
-        // document.write("PATH FOUND !");
-        document.getElementById("result").innerHTML = "PATH FOUND !";
+          document.getElementById("result").innerHTML = "PATH FOUND !";
 
       }
       
@@ -447,24 +284,28 @@ noLoop();
         var neighbor = neighbors[i];
         if(!closedSet.includes(neighbor) && !neighbor.obstacle){
           var tempG = current.g + 1;
-
+var newPath = false;
           if(openSet.includes(neighbor)){
             if(tempG < neighbor.g){
               neighbor.g = tempG;      // tempG to check if g of node was smaller in a previous iteration to keep it
+              newPath = true;
             }
           }else{
             neighbor.g = tempG;
+            newPath = true;
             openSet.push(neighbor);
           }
-
-          neighbor.h = heuristic(neighbor,end);
+          if(newPath){
+            neighbor.h = heuristic(neighbor,end);
           neighbor.f = neighbor.g + neighbor.h;
           neighbor.previous = current;
+          }
+          
 
         }
       }
     }else{
-      // document.write("PATH NOT FOUND !");
+      
       document.getElementById("result").innerHTML = "PATH NOT FOUND !";
       // no solution !
     }
