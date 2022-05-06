@@ -222,7 +222,7 @@ function setup(mode) {
     }
   }
 
-  start = grid[46][15];
+  start = grid[0][0];
   if (start.obstacle) {
     window.alert("Le point de départ est un Obstacle ! L'algorithme ne commencera pas !");
     return 0;
