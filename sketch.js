@@ -165,9 +165,6 @@ function Spot(i, j) {
 
 }
 
-Spot.prototype.contains = function (x, y) {
-  return (x * w > this.x && x * w < (this.x * w + this.w) && y * w > this.y * w && y * w < (this.y * w + this.w));
-}
 
 
 function mousePressed() {
@@ -183,8 +180,6 @@ function mousePressed() {
 
 
 }
-
-
 
 
 function validate() {
